@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.coolweather.app.db.CoolWeatherOpenHelper;
 
-import android.app.ListFragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class CoolWeatherDB {
 	/**
@@ -99,13 +99,14 @@ public class CoolWeatherDB {
 	}
 
 	/**
-	 * 从数据库读取全国所有城市的信息
+	 * 从数据库读取某省所有城市的信息
 	 */
 	public List<City> loadCities(int provinceId) {
-		List<City> list = new ArrayList<>();
-
-		Cursor cursor = db.query("City", null, "provide_id = ?",
+		List<City> list = new ArrayList<City>();
+		Log.i("loadCities中。。。。", "queryCities运行前");
+		Cursor cursor = db.query("City", null, "province_id = ?",
 				new String[] { String.valueOf(provinceId) }, null, null, null);
+		Log.i("loadCities中。。。。", "queryCities运行后");
 		if (cursor.moveToFirst()) {
 			do {
 				City city = new City();
@@ -133,8 +134,9 @@ public class CoolWeatherDB {
 			ContentValues values = new ContentValues();
 			values.put("county_name", county.getCountyName());
 			values.put("county_code", county.getCountyCode());
-			values.put("city_id", county.getCityId());
+			values.put("citys_id", county.getCityId());
 			db.insert("County", null, values);
+			Log.i("saveCounty中。。。。", "插入County完成了");
 
 		}
 	}
@@ -143,10 +145,11 @@ public class CoolWeatherDB {
 	 * 从数据库读取全国所有城市的信息
 	 */
 	public List<County> loadCounties(int cityId) {
-		List<County> list = new ArrayList<>();
-
-		Cursor cursor = db.query("County", null, "city_id = ?",
+		List<County> list = new ArrayList<County>();
+		Log.i("loadCounties中。。。。", "queryCounties运行前");
+		Cursor cursor = db.query("County", null, "citys_id = ?",
 				new String[] { String.valueOf(cityId) }, null, null, null);
+		Log.i("loadCounties中。。。。", "querCounties运行后");
 		if (cursor.moveToFirst()) {
 			do {
 				County county = new County();
