@@ -98,14 +98,15 @@ public class Utility {
 	public static void handleWeatherResponse(Context context,String response) {
 		try {
 			JSONObject jsonObject = new JSONObject(response);
-			JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
-			String cityName = weatherInfo.getString("city");
+			JSONObject weatherInfo = jsonObject.getJSONObject("result");
+			String cityName = weatherInfo.getString("citynm");
 			String weatherCode = weatherInfo.getString("cityid");
 			Log.i("cityName", cityName);
-			String temp1 = weatherInfo.getString("temp1");
-			String temp2 = weatherInfo.getString("temp2");
+			String temp1 = weatherInfo.getString("temp_high");
+			String temp2 = weatherInfo.getString("temp_low");
 			String weatherDesp = weatherInfo.getString("weather");
-			String publishTime = weatherInfo.getString("ptime");
+			String publishTime = "08:00";
+					//weatherInfo.getString("ptime");
 			saveWeatherInfo(context,cityName,weatherCode,temp1,temp2,weatherDesp,publishTime);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -127,7 +128,7 @@ public class Utility {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyƒÍM‘¬d»’", Locale.CHINA);
 		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
 		editor.putBoolean("city_selected", true);
-		editor.putString("weatherCode", weatherCode);
+		editor.putString("weather_code", weatherCode);
 		editor.putString("cityname", cityName);
 		editor.putString("temp1",temp1);
 		editor.putString("temp2", temp2);
